@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Linear Programming Solver</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/font.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/tooltip.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/scrollbar.css') }}"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <form action="{{ url_for("form")}}" method="post">
+      <select name="goal" id="goal">
+        <option value="maximize" selected>maximize</option>
+        <option value="minimize">minimize</option>
+      </select>
+      <textarea
+        name="obj_func"
+        id="obj_func"
+        cols="30"
+        rows="1"
+        placeholder="50*x1 + 20*x2 + 25*x3"
+      ></textarea>
+      <textarea
+        name="constraints"
+        id="constraints"
+        cols="30"
+        rows="10"
+        placeholder="9*x1 + 3*x2 + 5*x3 <= 500&#10;5*x1 + 4*x2 <= 350&#10;3*x1 + 2*x3 <= 150&#10;x1 >= 0&#10;x2 >= 0&#10;0 <= x3 <= 20"
+      ></textarea>
+      <input type="number" name="epsilon" id="epsilon" value="0.0001" />
+      <select name="rounding" id="rounding">
+        <option value="auto" selected></option>
+        <option value="down">down</option>
+        <option value="up">up</option>
+      </select>
+      <button type="submit">submit</button>
+    </div>
+  </body>
+</html>
