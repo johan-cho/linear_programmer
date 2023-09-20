@@ -5,7 +5,12 @@
     <title>Linear Programming Solver</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../static/css/index.css" />
+    <link rel="stylesheet" href="../static/css/font.css" />
+    <link rel="stylesheet" href="../static/css/tooltip.css" />
+    <link rel="stylesheet" href="../static/css/scrollbar.css" />
+    <!--<link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/index.css') }}"
     />
@@ -20,7 +25,7 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/scrollbar.css') }}"
-    />
+    /> -->
   </head>
   <body>
     <div class="main">
@@ -45,7 +50,7 @@
       ></textarea>
       <input type="number" name="epsilon" id="epsilon" value="0.0001" />
       <select name="rounding" id="rounding">
-        <option value="auto" selected></option>
+        <option value="auto" selected>auto</option>
         <option value="down">down</option>
         <option value="up">up</option>
       </select>
