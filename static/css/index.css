@@ -6,7 +6,7 @@ body {
 
 body {
   font-family: "itc-stone-sans-reg", "montserrat", sans-serif;
-  background-image: url("../img/martinez-c.jpg");
+  background-image: url("../img/westend.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -37,6 +37,7 @@ body {
 }
 .div_wrapper {
   overflow: hidden;
+  height: 100%;
 }
 
 .centered {
