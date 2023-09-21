@@ -1,7 +1,11 @@
+html,
 body {
+  height: 100%;
   margin: 0;
+}
+
+body {
   font-family: "itc-stone-sans-reg", "montserrat", sans-serif;
-  height: auto;
   background-image: url("../img/martinez-c.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -10,23 +14,93 @@ body {
   background-position: 50% 50%;
 }
 .main {
-  padding: 0px;
   background: none;
-  z-index: 100000000;
   /* background: rgba(0, 0, 0, 0.8); */
   /* border-top: 3px solid rgba(0, 0, 0, 0.9);
     border-bottom: 3px solid rgba(0, 0, 0, 0.9); */
   overflow: hidden;
   padding: 14px 16px;
+  height: 100%;
   /* border: 3px solid black; */
   justify-content: center;
+  align-items: center;
+  text-align: center;
   font-size: 14pt;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  margin: 2% 0%;
+  margin: 0px 10%;
   background: linear-gradient(
     rgba(0, 0, 0, 0.7),
     rgba(0, 0, 0, 0.8) 5% 95%,
     rgba(0, 0, 0, 0.7)
   );
+}
+.div_wrapper {
+  overflow: hidden;
+}
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
+  width: 120px;
+}
+
+.circled {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+}
+
+.base_grid {
+  display: grid;
+  width: 90%;
+  margin: 2% auto;
+  column-gap: 10px;
+  text-align: left;
+}
+.drawer {
+  grid-column: 1/4;
+  padding-left: 15px;
+  cursor: auto;
+  padding-right: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  margin-top: 4px;
+  /* z-index: -1; */
+}
+.container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 100px minmax(75px, auto) 50px;
+  grid-template-rows: repeat(2, auto);
+  border: 2px solid #969696;
+  border-radius: 5px;
+  overflow: hidden;
+  /* background: gray; */
+  cursor: pointer;
+  border-bottom: 1px solid #969696;
+  text-align: left;
+  width: 90%;
+  margin: 20px auto auto auto;
+}
+
+.container > span {
+  border-bottom: 2px solid #969696;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.span_carrot {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* float: left; */
+  margin-left: 10px;
+}
+
+.span_img {
+  display: flex;
 }

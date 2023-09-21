@@ -2,7 +2,7 @@
   position: relative;
   display: inline-block;
   max-height: 100%;
-  /* border-bottom: 1px dotted black; */
+  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
