@@ -1,7 +1,6 @@
-html,
-body {
+html {
   height: 100%;
-  margin: 0;
+  overflow: auto;
 }
 
 body {
@@ -12,16 +11,14 @@ body {
   background-attachment: fixed;
   color: #f2f2f2;
   background-position: 50% 50%;
+  height: 100%;
+  margin: 0;
 }
 .main {
   background: none;
-  /* background: rgba(0, 0, 0, 0.8); */
-  /* border-top: 3px solid rgba(0, 0, 0, 0.9);
-    border-bottom: 3px solid rgba(0, 0, 0, 0.9); */
-  overflow: hidden;
-  padding: 14px 16px;
+  overflow: auto;
+  padding: 0px 16px;
   height: 100%;
-  /* border: 3px solid black; */
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -35,15 +32,9 @@ body {
     rgba(0, 0, 0, 0.7)
   );
 }
-.div_wrapper {
-  overflow: hidden;
-  height: 100%;
-}
 
 .centered {
-  margin-left: auto;
-  margin-right: auto;
-  width: 120px;
+  margin: 10px auto 10px auto;
 }
 
 .circled {
@@ -56,7 +47,7 @@ body {
 .base_grid {
   display: grid;
   width: 90%;
-  margin: 2% auto;
+  margin: 0px auto;
   column-gap: 10px;
   text-align: left;
 }
@@ -83,6 +74,7 @@ body {
   text-align: left;
   width: 90%;
   margin: 20px auto auto auto;
+  max-width: 300px;
 }
 
 .container > span {

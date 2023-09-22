@@ -30,132 +30,128 @@
     /> -->
   </head>
   <body>
-    <div class="div_wrapper">
-      <div class="main">
-        <div>
-          <h1>Linear Programming Solver</h1>
-          <img src="../static/img/LP.png" alt="LP" height="100px" />
-        </div>
+    <div class="main">
+      <div>
+        <h1>Linear Programming Solver</h1>
+        <img src="../static/img/LP.png" alt="LP" height="100px" />
+      </div>
 
-        <form action="{{ url_for("form")}}" method="post">
-        <div>
-          <span
-            class="base_grid"
-            style="grid-template-columns: 100px 100px minmax(100px, 100%)"
-            ><span>objective:</span>
-            <select name="goal" id="goal">
-              <option value="maximize" selected>maximize</option>
-              <option value="minimize">minimize</option></select
-            ><textarea
-              name="obj_func"
-              id="obj_func"
-              cols="30"
-              rows="1"
-              placeholder="2*x1 + 5*x2"
-            ></textarea>
-          </span>
-        </div>
-        <div
+      <form action="{{ url_for("form")}}" method="post">
+      <div class="centered">objective function:</div>
+      <div>
+        <span
           class="base_grid"
           style="grid-template-columns: 100px minmax(100px, 100%)"
         >
-          <span>constraints:</span
+          <select name="goal" id="goal">
+            <option value="maximize" selected>maximize</option>
+            <option value="minimize">minimize</option></select
           ><textarea
-            name="constraints"
-            id="constraints"
+            name="obj_func"
+            id="obj_func"
             cols="30"
-            rows="10"
-            placeholder="x1 + x2 == 10&#10;-2*x1+3*x2 <= -6&#10;8*x1 - 4*x2 >= 8&#10;x1 >= 0&#10;x2 >= 0"
+            rows="1"
+            placeholder="2*x1 + 5*x2"
           ></textarea>
-        </div>
-        <button type="submit">submit</button>
-
-        <span class="container">
-          <span
-            class="span_img"
-            onclick="openDrawer('1')"
-            onmouseover="hoverDrawer('1')"
-            onmouseleave="unhoverDrawer('1')"
-            id="col-1-1"
-          >
-            <img
-              src="../static/img/wrench.png"
-              height="50"
-              width="50"
-              class="image"
-              alt="T"
-            />
-          </span>
-          <span
-            onclick="openDrawer('1')"
-            onmouseover="hoverDrawer('1')"
-            onmouseleave="unhoverDrawer('1')"
-            id="col-2-1"
-          >
-            <h2>settings</h2>
-          </span>
-          <span
-            class="span_img"
-            onclick="openDrawer('1')"
-            onmouseover="hoverDrawer('1')"
-            onmouseleave="unhoverDrawer('1')"
-            id="col-3-1"
-          >
-            <img
-              src="../static/img/carrot.png"
-              height="25"
-              width="25"
-              class="image"
-              alt="carrot"
-              id="carrot-1"
-            />
-          </span>
-          <span id="drawer-1" class="drawer" style="display: none">
-            <div
-              class="base_grid"
-              style="
-                grid-template-columns: minmax(0px, 100%) 65px 100px 80px 100px minmax(
-                    0px,
-                    100%
-                  );
-                margin: 10px auto 0 auto;
-              "
-            >
-              <span></span>
-              <span>epsilon: </span>
-              <input
-                type="number"
-                name="epsilon"
-                id="epsilon"
-                value="0.0001"
-                step="all"
-              /><span>rounding: </span>
-              <select name="rounding" id="rounding">
-                <option value="auto" selected>auto</option>
-                <option value="down">down</option>
-                <option value="up">up</option></select
-              ><span></span>
-            </div>
-            <div
-              class="base_grid"
-              style="
-                grid-template-columns: minmax(0px, 100%) 120px 120px minmax(
-                    0px,
-                    100%
-                  );
-                margin: 10px auto 0 auto;
-              "
-            >
-              <span></span>
-
-              <button type="reset">reset</button
-              ><button type="button" onclick="loadTestData()">
-                load test data</button
-              ><span></span>
-            </div>
-          </span>
         </span>
       </div>
+      <div class="centered">constraints</div>
+      <div class="base_grid" style="grid-template-columns: minmax(100px, 100%)">
+        <textarea
+          name="constraints"
+          id="constraints"
+          cols="30"
+          rows="10"
+          placeholder="x1 + x2 == 10&#10;-2*x1+3*x2 <= -6&#10;8*x1 - 4*x2 >= 8&#10;x1 >= 0&#10;x2 >= 0"
+        ></textarea>
+      </div>
+      <button type="submit" class="submit">submit</button>
+
+      <span class="container">
+        <span
+          class="span_img"
+          onclick="openDrawer('1')"
+          onmouseover="hoverDrawer('1')"
+          onmouseleave="unhoverDrawer('1')"
+          id="col-1-1"
+        >
+          <img
+            src="../static/img/wrench.png"
+            height="50"
+            width="50"
+            class="image"
+            alt="T"
+          />
+        </span>
+        <span
+          onclick="openDrawer('1')"
+          onmouseover="hoverDrawer('1')"
+          onmouseleave="unhoverDrawer('1')"
+          id="col-2-1"
+        >
+          <h2>settings</h2>
+        </span>
+        <span
+          class="span_img"
+          onclick="openDrawer('1')"
+          onmouseover="hoverDrawer('1')"
+          onmouseleave="unhoverDrawer('1')"
+          id="col-3-1"
+        >
+          <img
+            src="../static/img/carrot.png"
+            height="25"
+            width="25"
+            class="image"
+            alt="carrot"
+            id="carrot-1"
+          />
+        </span>
+        <span id="drawer-1" class="drawer" style="display: none">
+          <div
+            class="base_grid"
+            style="
+              grid-template-columns: minmax(0px, 100%) 65px 100px 80px 100px minmax(
+                  0px,
+                  100%
+                );
+              margin: 10px auto 0 auto;
+            "
+          >
+            <span></span>
+          </div>
+          <div
+            class="base_grid"
+            style="
+              grid-template-columns: minmax(0px, 100%) 110px 110px minmax(
+                  0px,
+                  100%
+                );
+              grid-template-rows: 30px 30px 25px;
+              margin: 10px auto 0 auto;
+              row-gap: 10px;
+            "
+          >
+            <span></span>
+            <span>epsilon: </span>
+            <input
+              type="number"
+              name="epsilon"
+              id="epsilon"
+              value="0.0001"
+              step="any"
+            /><span></span><span></span><span>rounding: </span>
+            <select name="round" id="round">
+              <option value="auto" selected>auto</option>
+              <option value="down">down</option>
+              <option value="up">up</option></select
+            ><span></span><span></span> <button type="reset">reset</button
+            ><button type="button" onclick="loadTestData()">
+              load test data
+            </button>
+          </div>
+        </span>
+      </span>
     </div>
   </body>
 </html>

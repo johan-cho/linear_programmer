@@ -14,3 +14,7 @@ button:hover,
 input:hover {
   background: rgba(54, 54, 54, 0.65);
 }
+
+.submit {
+  margin-top: 20px;
+}

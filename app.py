@@ -1,6 +1,6 @@
 """Run the application."""
 import logging
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, Response
 from helper_functions import gen_solver, solve
 
 
@@ -10,11 +10,7 @@ def test_solve() -> str:
 
     solvah = gen_solver(
         objective_func,
-        [
-            "x1 + x2 == 10",
-            "-2*x1+3*x2 <= -6",
-            "8*x1 - 4*x2 >= 8",
-        ],
+        ["x1 + x2 == 10", "-2*x1+3*x2 <= -6", "8*x1 - 4*x2 >= 8"],
         epsilon=0.7,
     )
     return solve(solvah, "auto", next(iter(objective_func.values())))
@@ -30,11 +26,11 @@ def create_app() -> Flask:
         return render_template("missing_objective.html")
 
     @__app.route("/", methods=["GET", "POST"])
-    def form() -> str:
+    def form() -> str | Response:
         """Return a greeting to the user
 
         Returns:
-            str: Greeting to the user"""
+            str: a rendered template"""
 
         if request.method == "POST":
             obj_func = request.form.get("obj_func")
@@ -54,10 +50,8 @@ def create_app() -> Flask:
     return __app
 
 
-app = create_app()
-
-
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.INFO)
+    app = create_app()
     app.run(debug=True)
     # test_solve()
