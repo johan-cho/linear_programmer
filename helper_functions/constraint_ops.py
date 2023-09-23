@@ -2,9 +2,18 @@
 import re
 from typing import Iterable
 
+OPERATOR_MAPPER = {
+    "<": "<<",
+    "<=": "<=",
+    ">": ">>",
+    ">=": ">=",
+    "=": "==",
+    "!=": "!=",
+}
+
 
 def yeild_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str]:
-    """Return a constraint with an epsilon added to the constant
+    """Return a parsed constraint with an epsilon added to the constant
 
     Args:
         constraint (str): Constraint string
@@ -13,19 +22,23 @@ def yeild_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str
         Iterable[str]: Constraint with epsilon added to the constant
     """
 
+    constraint = re.sub(r"(\d)([a-zA-Z])", r"\1*\2", constraint.replace(" ", ""))
     operator = re.search(r"([<>=!]+)", constraint).group()
-    if operator == "=":
-        constraint = constraint.replace("=", "==")
-        operator = "=="
-    for oper in ["<", "<<", ">", ">>", "!=", "=="]:
-        match = re.search(rf"{oper}(\d+(\.\d+)?)", constraint)
-        if match:
-            constant = float(match.group(1))
-            break
-    if operator in ["<", "<<", ">", ">>"]:
+    operator_getr = OPERATOR_MAPPER.get(operator, operator)
+    constraint = constraint.replace(operator, operator_getr)
+    operator = operator_getr
+
+    constant = float(re.search(r"[<>=]+(-?\d+)", constraint).group(1))
+
+    # for oper in ["<", "<<", ">", ">>", "!=", "=="]:
+    #     match = re.search(rf"{re.escape(oper)}(\d+(\.\d+)?)", constraint)
+    #     if match:
+    #         constant = float(match.group(1))
+    #         break
+    if operator in ["<<", ">>"]:
         yield mod_constr(constraint, constant, operator, epsilon)
     elif operator == "!=":
-        for opr in ["<", ">"]:
+        for opr in ["<<", ">>"]:
             yield mod_constr(constraint.replace("!=", opr), constant, opr, epsilon)
     else:
         yield constraint

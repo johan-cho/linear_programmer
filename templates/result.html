@@ -32,15 +32,35 @@
   <body>
     <div class="main">
       <div>
-        <h1 class="error">The Objective Function Is Required.</h1>
+        <h1>Solved.</h1>
         <img
           src="{{ url_for('static', filename='img/LP.png') }}"
           alt="LP"
           height="100px"
         />
-        <div class="error centered">
-          <h2>you entered: {{_obj_func}}</h2>
+        <div class="centered">
+          <h2>exact solution: {{solution}}</h2>
         </div>
+        <div class="centered">
+          <h2>rounded solution: {{rounded_solution}}</h2>
+        </div>
+        <table>
+          <tr>
+            <th>variable</th>
+            <th>value</th>
+            <th>rounded</th>
+          </tr>
+          {% for key, value in variables.items() %}
+
+          <tr>
+            <td>{{ key }}</td>
+            <td>{{ value[0] }}</td>
+            <td>{{ value[1] }}</td>
+          </tr>
+
+          {% endfor %}
+        </table>
+
         <a class="back container" href="../">
           <span
             class="span_img"

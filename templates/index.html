@@ -5,14 +5,8 @@
     <title>Linear Programming Solver</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="../static/img/LP.ico" />
-    <link rel="stylesheet" href="../static/css/index.css" />
-    <link rel="stylesheet" href="../static/css/font.css" />
-    <link rel="stylesheet" href="../static/css/tooltip.css" />
-    <link rel="stylesheet" href="../static/css/scrollbar.css" />
-    <link rel="stylesheet" href="../static/css/forms.css" />
-    <script src="../static/index.js"></script>
-    <!--<link
+    <link rel="icon" href="{{ url_for('static', filename='img/LP.ico')}}" />
+    <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/index.css') }}"
     />
@@ -27,7 +21,13 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/scrollbar.css') }}"
-    /> -->
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/forms.css') }}"
+    />
+
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
   </head>
   <body>
     <div class="main">
@@ -39,10 +39,7 @@
       <form action="{{ url_for("form")}}" method="post">
       <div class="centered">objective function:</div>
       <div>
-        <span
-          class="base_grid"
-          style="grid-template-columns: 100px minmax(100px, 100%)"
-        >
+        <span class="goal base_grid">
           <select name="goal" id="goal">
             <option value="maximize" selected>maximize</option>
             <option value="minimize">minimize</option></select
@@ -56,13 +53,13 @@
         </span>
       </div>
       <div class="centered">constraints</div>
-      <div class="base_grid" style="grid-template-columns: minmax(100px, 100%)">
+      <div class="constraints base_grid">
         <textarea
           name="constraints"
           id="constraints"
           cols="30"
           rows="10"
-          placeholder="x1 + x2 == 10&#10;-2*x1+3*x2 <= -6&#10;8*x1 - 4*x2 >= 8&#10;x1 >= 0&#10;x2 >= 0"
+          placeholder="x1 + x2 == 10&#10;-2*x1 + 3*x2 <= -6&#10;8*x1 - 4*x2 >= 8&#10;x1 >= 0&#10;x2 >= 0"
         ></textarea>
       </div>
       <button type="submit" class="submit">submit</button>
@@ -76,11 +73,11 @@
           id="col-1-1"
         >
           <img
-            src="../static/img/wrench.png"
+            src="{{ url_for('static', filename='img/wrench.png') }}"
             height="50"
             width="50"
             class="image"
-            alt="T"
+            alt="wrench"
           />
         </span>
         <span
@@ -99,7 +96,7 @@
           id="col-3-1"
         >
           <img
-            src="../static/img/carrot.png"
+            src="{{ url_for('static', filename='img/carrot.png') }}"
             height="25"
             width="25"
             class="image"
@@ -108,39 +105,55 @@
           />
         </span>
         <span id="drawer-1" class="drawer" style="display: none">
-          <div
-            class="base_grid"
-            style="
-              grid-template-columns: minmax(0px, 100%) 65px 100px 80px 100px minmax(
-                  0px,
-                  100%
-                );
-              margin: 10px auto 0 auto;
-            "
-          >
-            <span></span>
-          </div>
-          <div
-            class="base_grid"
-            style="
-              grid-template-columns: minmax(0px, 100%) 110px 110px minmax(
-                  0px,
-                  100%
-                );
-              grid-template-rows: 30px 30px 25px;
-              margin: 10px auto 0 auto;
-              row-gap: 10px;
-            "
-          >
-            <span></span>
-            <span>epsilon: </span>
+          <div class="options base_grid">
+            <span></span
+            ><span class="tooltip"
+              >method:
+              <span
+                ><span class="tooltiptext"
+                  >Evaluation method. "GLOP" is reccomended.</span
+                ></span
+              ></span
+            >
+            <select name="method" id="method">
+              <option value="CLP">CLP</option>
+              <option value="CBC">CBC</option>
+              <option value="GLOP" selected>GLOP</option>
+              <option value="BOP">BOP</option>
+              <option value="SAT">SAT</option>
+              <option value="SCIP">SCIP</option>
+              <option value="GUROBI_LP">GUROBI_LP</option>
+              <option value="GUROBI_MIP">GUROBI_MIP</option>
+              <option value="CPLEX_LP">CPLEX_LP</option>
+              <option value="CPLEX_MIP">CPLEX_MIP</option>
+              <option value="XPRESS_LP">XPRESS_LP</option>
+              <option value="XPRESS_MIP">XPRESS_MIP</option>
+              <option value="GLPK_LP">GLPK_LP</option>
+              <option value="GLPK_MIP">GLPK_MIP</option>
+            </select>
+            <span></span><span></span>
+
+            <span class="tooltip"
+              >epsilon:
+              <span
+                ><span class="tooltiptext"
+                  >Offset to implement "<", ">"</span
+                ></span
+              ></span
+            >
             <input
               type="number"
               name="epsilon"
               id="epsilon"
               value="0.0001"
               step="any"
-            /><span></span><span></span><span>rounding: </span>
+            /><span></span><span></span
+            ><span class="tooltip"
+              >rounding:
+              <span
+                ><span class="tooltiptext">rounding method.</span></span
+              ></span
+            >
             <select name="round" id="round">
               <option value="auto" selected>auto</option>
               <option value="down">down</option>
@@ -152,6 +165,82 @@
           </div>
         </span>
       </span>
+
+      <div class="contact_div">
+        <h4>This was a personal project.</h4>
+        <span
+          class="tooltip-mini_image"
+          onmouseover="hoverImage('github')"
+          onmouseleave="unhoverImage('github')"
+        >
+          <span class="tooltiptext-mini_image">View this repository</span>
+          <a href="https://github.com/tandy-c/linear_programmer">
+            <img
+              src="/static/img/github.png"
+              class="contact_imgs"
+              alt="github"
+              id="github"
+            /> </a
+        ></span>
+        <span
+          class="tooltip-mini_image"
+          onmouseover="hoverImage('about_me')"
+          onmouseleave="unhoverImage('about_me')"
+        >
+          <span class="tooltiptext-mini_image">About me!</span>
+          <a href="https://tandy-c.github.io/website/">
+            <img
+              src="static/img/johan.png"
+              class="contact_imgs"
+              alt="about_me"
+              id="about_me"
+            /> </a
+        ></span>
+        <span
+          class="tooltip-mini_image"
+          onmouseover="hoverImage('linkedin')"
+          onmouseleave="unhoverImage('linkedin')"
+        >
+          <span class="tooltiptext-mini_image">My Linkedin</span>
+          <a href="https://www.linkedin.com/in/chojohan/">
+            <img
+              src="static/img/linkedin.png"
+              class="contact_imgs"
+              alt="linkedin"
+              id="linkedin"
+            /> </a
+        ></span>
+        <span
+          class="tooltip-mini_image"
+          onmouseover="hoverImage('facebook')"
+          onmouseleave="unhoverImage('facebook')"
+        >
+          <span class="tooltiptext-mini_image">My Facebook</span>
+          <a href="https://www.facebook.com/johan.cho.927">
+            <img
+              src="static/img/facebook.png"
+              class="contact_imgs"
+              alt="facebook"
+              id="facebook"
+            /> </a
+        ></span>
+        <span
+          class="tooltip-mini_image"
+          onmouseover="hoverImage('youtube')"
+          onmouseleave="unhoverImage('youtube')"
+        >
+          <span class="tooltiptext-mini_image"
+            >My Youtube (haven't touched it in a bit)</span
+          >
+          <a href="https://www.youtube.com/channel/UCP91LPgRFY03YoIGrmuMH9A">
+            <img
+              src="static/img/youtube.png"
+              class="contact_imgs"
+              alt="youtube"
+              id="youtube"
+            /> </a
+        ></span>
+      </div>
     </div>
   </body>
 </html>

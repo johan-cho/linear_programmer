@@ -1,8 +1,8 @@
 .tooltip {
   position: relative;
   display: inline-block;
-  max-height: 100%;
-  border-bottom: 1px dotted black;
+  border-bottom: 2px dotted #f2f2f2;
+  width: fit-content;
 }
 
 .tooltip .tooltiptext {
@@ -15,17 +15,16 @@
   padding: 5px 5px;
   position: absolute;
   z-index: 1;
-  top: 10px;
+  top: 0px;
   left: 120%;
-  font-size: 12pt;
-  /* font-family: "montserrat", "Helvetica", sans-serif !important; */
   width: auto;
-  white-space: nowrap;
   pointer-events: none;
   border: none;
+  font-size: 10pt;
+  max-width: 130px;
 }
 
-.tooltip .tooltiptext::after {
+/* .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -34,11 +33,52 @@
   border-width: 5px;
   border-style: solid;
   border-color: transparent #f2f2f2 transparent transparent;
-  /* z-index: 10000; */
-}
+
+} */
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
-  -webkit-animation: fadeIn 250ms;
-  animation: fadeIn 250ms;
+  animation: fadeIn 500ms;
+  -webkit-animation: fadeIn 500ms;
+}
+
+.tooltip-mini_image {
+  position: relative;
+  display: inline-block;
+  /* border-bottom: 1px dotted black; */
+}
+
+.tooltip-mini_image .tooltiptext-mini_image {
+  visibility: hidden;
+  background-color: #f2f2f2;
+  opacity: 0.95;
+  color: #252525;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 5px;
+  position: absolute;
+  z-index: 1;
+  width: auto;
+  white-space: nowrap;
+  pointer-events: none;
+  border: none;
+  left: 90%;
+  top: 20%;
+}
+
+.tooltip-mini_image .tooltiptext-mini_image::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #f2f2f2 transparent transparent;
+}
+
+.tooltip-mini_image:hover .tooltiptext-mini_image {
+  visibility: visible;
+  animation: fadeIn 500ms;
+  -webkit-animation: fadeIn 500ms;
 }

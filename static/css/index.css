@@ -1,8 +1,3 @@
-html {
-  height: 100%;
-  overflow: auto;
-}
-
 body {
   font-family: "itc-stone-sans-reg", "montserrat", sans-serif;
   background-image: url("../img/westend.png");
@@ -11,21 +6,19 @@ body {
   background-attachment: fixed;
   color: #f2f2f2;
   background-position: 50% 50%;
-  height: 100%;
-  margin: 0;
 }
 .main {
   background: none;
-  overflow: auto;
-  padding: 0px 16px;
-  height: 100%;
+  overflow: hidden;
+  padding: 20px 20px;
   justify-content: center;
   align-items: center;
   text-align: center;
   font-size: 14pt;
   -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
   backdrop-filter: blur(10px);
-  margin: 0px 10%;
+  margin: auto auto;
   background: linear-gradient(
     rgba(0, 0, 0, 0.7),
     rgba(0, 0, 0, 0.8) 5% 95%,
@@ -83,6 +76,11 @@ body {
   align-items: center;
   justify-content: center;
 }
+.back {
+  max-width: 200px;
+  text-decoration: none;
+  color: #f2f2f2;
+}
 
 .span_carrot {
   display: flex;
@@ -96,4 +94,60 @@ body {
 
 .span_img {
   display: flex;
+}
+
+.error {
+  color: rgb(255, 88, 88);
+}
+
+.goal {
+  grid-template-columns: 100px minmax(100px, 100%);
+}
+.constraints {
+  grid-template-columns: minmax(100px, 100%);
+}
+.options {
+  grid-template-columns: minmax(0px, 100%) 110px 110px minmax(0px, 100%);
+  grid-template-rows: 30px 30px 30px 25px;
+  margin: 10px auto 0 auto;
+  row-gap: 10px;
+}
+.traceback {
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 10px;
+  overflow: auto;
+  font-size: 8pt;
+  font-family: monospace, "itc-stone-sans-reg", "montserrat", sans-serif;
+  padding: 0px 10px 0px 10px;
+}
+
+table,
+tr,
+td,
+th {
+  border-collapse: collapse;
+  border: 1px solid white;
+  width: auto;
+  min-width: 100px;
+}
+
+table {
+  margin: auto;
+}
+
+th {
+  background: rgba(0, 68, 255, 0.219);
+}
+
+h4 {
+  color: #979797;
+}
+.contact_imgs {
+  width: 45px;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.contact_div {
+  margin-top: -10px;
 }
