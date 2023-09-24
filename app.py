@@ -2,10 +2,13 @@
 import ast
 import logging
 import traceback
+from typing import Union
 from flask import Flask, request, render_template, redirect, Response, url_for
 from helper_functions import gen_solver, solve, NoSolutionError
 
 # pylint: disable=broad-except
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 def test_solve() -> str:
@@ -60,7 +63,7 @@ def create_app() -> Flask:
         )
 
     @__app.route("/", methods=["GET", "POST"])
-    def form() -> str | Response:
+    def form() -> Union[str, Response]:
         """Return a greeting to the user
 
         Returns:
@@ -116,7 +119,6 @@ def create_app() -> Flask:
 
 
 if __name__ == "__main__":
-    logging.getLogger().setLevel(logging.INFO)
     app = create_app()
     app.run(debug=True)
     # test_solve()

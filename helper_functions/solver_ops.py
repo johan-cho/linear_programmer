@@ -3,6 +3,7 @@
 import re
 import math
 import logging
+from typing import Union
 from ortools.linear_solver.pywraplp import Solver, Objective, Variable
 from .constraint_ops import yeild_constraints
 from .exceptions import NoSolutionError
@@ -57,10 +58,11 @@ def gen_solver(
 
 
 def solve(
-    solver: Solver, __round: int | str | None = None, __obj_func: None | str = None
-) -> dict[str, str | float | dict[str, float | dict[str, list[float | int]]]]:
+    solver: Solver,
+    __round: Union[int, str, None] = None,
+    __obj_func: Union[None, str] = None,
+) -> dict[str, Union[float, str, dict[str, Union[float, list]]]]:
     """Solve the solver object. Will print the solution and the rounded solution if __round is not None.
-
     Args:
         solver (Solver): Solver object
         __round (int | str | None, optional): Round the solution values. Defaults to None. If 'down' or 'floor', will floor the solution values.

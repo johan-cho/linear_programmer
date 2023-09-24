@@ -2,14 +2,7 @@
 import re
 from typing import Iterable
 
-OPERATOR_MAPPER = {
-    "<": "<<",
-    "<=": "<=",
-    ">": ">>",
-    ">=": ">=",
-    "=": "==",
-    "!=": "!=",
-}
+OPERATOR_MAPPER = {"<": "<<", ">": ">>", "=": "=="}
 
 
 def yeild_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str]:
@@ -24,17 +17,10 @@ def yeild_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str
 
     constraint = re.sub(r"(\d)([a-zA-Z])", r"\1*\2", constraint.replace(" ", ""))
     operator = re.search(r"([<>=!]+)", constraint).group()
-    operator_getr = OPERATOR_MAPPER.get(operator, operator)
-    constraint = constraint.replace(operator, operator_getr)
-    operator = operator_getr
-
+    constraint = constraint.replace(operator, OPERATOR_MAPPER.get(operator, operator))
+    operator = OPERATOR_MAPPER.get(operator, operator)
     constant = float(re.search(r"[<>=]+(-?\d+)", constraint).group(1))
 
-    # for oper in ["<", "<<", ">", ">>", "!=", "=="]:
-    #     match = re.search(rf"{re.escape(oper)}(\d+(\.\d+)?)", constraint)
-    #     if match:
-    #         constant = float(match.group(1))
-    #         break
     if operator in ["<<", ">>"]:
         yield mod_constr(constraint, constant, operator, epsilon)
     elif operator == "!=":
@@ -56,7 +42,7 @@ def mod_constr(constraint: str, constant: float, operator: str, epsilon: float) 
         str: Constraint with epsilon added to the constant
     """
 
-    if operator in ["<", "<<"]:
+    if operator == "<<":
         return constraint_replace(constraint, constant, operator, epsilon).replace(
             operator, "<="
         )
@@ -76,7 +62,7 @@ def constraint_replace(__constr: str, __const: str, __opr: str, __eps: float) ->
         str: Constraint with epsilon added to the constant
     """
 
-    new_const = __const - __eps if __opr in ["<", "<<"] else __const + __eps
+    new_const = __const - __eps if __opr == "<<" else __const + __eps
     new_constraint = __constr.replace(str(__const), str(new_const))
     if new_constraint == __constr:
         new_constraint = __constr.replace(str(int(__const)), str(new_const))
