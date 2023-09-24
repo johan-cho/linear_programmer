@@ -2,6 +2,8 @@
 
 Uses google OR tools and Flask to solve linear programming problems.
 
+Deployed to <https://tandyc.pythonanywhere.com/>
+
 ## python modules
 
 - [google OR tools](https://developers.google.com/optimization/)
