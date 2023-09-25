@@ -1,11 +1,9 @@
 """Solver operations module"""
-
-import re
 import math
 import logging
 from typing import Union
 from ortools.linear_solver.pywraplp import Solver, Objective, Variable
-from .constraint_ops import yeild_constraints
+from .constraint_ops import format_equation, yield_variables
 from .exceptions import NoSolutionError
 
 # pylint: disable=line-too-long
@@ -20,10 +18,7 @@ ROUND_METHS = {
 
 
 def gen_solver(
-    object_func: dict[str, str],
-    constraints: list[str],
-    method: str = "GLOP",
-    epsilon: float = 0.00001,
+    object_func: dict[str, str], constraints: list[str], method: str = "GLOP"
 ) -> Solver:
     """Generate a solver object. Will return first solver object created from dict.
         If a variable is a constraint but
@@ -33,7 +28,6 @@ def gen_solver(
         object_func (dict[str, str]): Objective function. eg. {"maximize": "3*x1 + x2"}. Note: "max" and "maximize" are both valid.
         constraints (list[str], optional): List of constraints. eg. ["x1 + 3*x2 <= 24"].
         method (str, optional): Method to use. Defaults to "GLOP".
-        epsilon (float, optional): Epsilon value to implement <, > and !=. Defaults to 0.00001.
     Returns:
         Solver: Solver object
     """
@@ -41,18 +35,18 @@ def gen_solver(
 
     for objective, equation in object_func.items():
         solver: Solver = Solver.CreateSolver(method.upper())
+        equation = format_equation(equation)
         variable_dict = {
             var: solver.NumVar(0, solver.infinity(), var)
-            for var in re.findall(r"\b([a-zA-Z][a-zA-Z0-9_]*)\b", equation)
+            for var in yield_variables(equation)
         }
         if objective.lower() in ["max", "maximize"]:
-            solver.Maximize(eval(equation.replace(" ", ""), variable_dict))
+            solver.Maximize(eval(equation, variable_dict))
         else:
-            solver.Minimize(eval(equation.replace(" ", ""), variable_dict))
+            solver.Minimize(eval(equation, variable_dict))
 
         for constr in constraints:
-            for constraint in yeild_constraints(constr, epsilon):
-                solver.Add(eval(constraint, variable_dict))
+            solver.Add(eval(constr, variable_dict))
 
         return solver
 

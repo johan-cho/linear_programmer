@@ -2,10 +2,16 @@
 import re
 from typing import Iterable
 
-OPERATOR_MAPPER = {"<": "<<", ">": ">>", "=": "=="}
+OPERATOR_MAPPER = {
+    "<": "<<",
+    ">": ">>",
+    "=": "==",
+    "=<": "<=",
+    "=>": ">=",
+}
 
 
-def yeild_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str]:
+def yield_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str]:
     """Return a parsed constraint with an epsilon added to the constant
 
     Args:
@@ -14,18 +20,18 @@ def yeild_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str
     Yields:
         Iterable[str]: Constraint with epsilon added to the constant
     """
-
-    constraint = re.sub(r"(\d)([a-zA-Z])", r"\1*\2", constraint.replace(" ", ""))
+    constraint = format_equation(constraint)
     operator = re.search(r"([<>=!]+)", constraint).group()
     constraint = constraint.replace(operator, OPERATOR_MAPPER.get(operator, operator))
     operator = OPERATOR_MAPPER.get(operator, operator)
-    constant = float(re.search(r"[<>=]+(-?\d+)", constraint).group(1))
 
     if operator in ["<<", ">>"]:
-        yield mod_constr(constraint, constant, operator, epsilon)
+        yield mod_constr(constraint, get_constant(constraint), operator, epsilon)
     elif operator == "!=":
         for opr in ["<<", ">>"]:
-            yield mod_constr(constraint.replace("!=", opr), constant, opr, epsilon)
+            yield mod_constr(
+                constraint.replace("!=", opr), get_constant(constraint), opr, epsilon
+            )
     else:
         yield constraint
 
@@ -67,3 +73,52 @@ def constraint_replace(__constr: str, __const: str, __opr: str, __eps: float) ->
     if new_constraint == __constr:
         new_constraint = __constr.replace(str(int(__const)), str(new_const))
     return new_constraint
+
+
+def format_equation(equation: str) -> str:
+    """Return a formatted equation
+
+    Args:
+        equation (str): Equation string
+    Returns:
+        str: Formatted equation
+    """
+
+    return re.sub(r"(\d)([a-zA-Z])", r"\1*\2", equation.replace(" ", ""))
+
+
+def yield_variables(equation: str) -> Iterable[str]:
+    """Return a set of variables in the equation
+
+    Args:
+        equation (str): Equation string
+    Yields:
+        Iterable[str]: Set of variables in the equation
+    """
+
+    yield from set(re.findall(r"\b([a-zA-Z][a-zA-Z0-9_]*)\b", equation))
+
+
+def get_coefficent(equation: str, variable: str) -> float:
+    """Return the coefficient of the variable in the equation
+
+    Args:
+        equation (str): Equation string
+        variable (str): Variable name
+    Returns:
+        float: Coefficient of the variable in the equation
+    """
+
+    return float(re.search(rf"(\d+|\d+\.\d+)({variable})", equation).group(1))
+
+
+def get_constant(equation: str) -> float:
+    """Return the constant in the equation
+
+    Args:
+        equation (str): Equation string
+    Returns:
+        float: Constant in the equation
+    """
+
+    return float(re.search(r"[<>=]+(-?\d+)", equation).group(1))

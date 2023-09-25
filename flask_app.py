@@ -4,23 +4,30 @@ import logging
 import traceback
 from typing import Union
 from flask import Flask, request, render_template, redirect, Response, url_for
-from helper_functions import gen_solver, solve, NoSolutionError
+from helper_functions import (
+    gen_solver,
+    solve,
+    NoSolutionError,
+    yield_constraints,
+    yield_variables,
+    plot,
+)
 
 # pylint: disable=broad-except
 
 logging.getLogger().setLevel(logging.INFO)
 
 
-def test_solve() -> str:
-    """Test the solve function"""
-    objective_func = {"minimize": "2*x1 + 5*x2"}
+# def test_solve() -> str:
+#     """Test the solve function"""
+#     objective_func = {"minimize": "2*x1 + 5*x2"}
 
-    solvah = gen_solver(
-        objective_func,
-        ["x1 + x2 == 10", "-2*x1+3*x2 <= -6", "8*x1 - 4*x2 >= 8"],
-        epsilon=0.7,
-    )
-    return solve(solvah, "auto", next(iter(objective_func.values())))
+#     solvah = gen_solver(
+#         objective_func,
+#         ["x1 + x2 == 10", "-2*x1+3*x2 <= -6", "8*x1 - 4*x2 >= 8"],
+#         epsilon=0.7,
+#     )
+#     return solve(solvah, "auto", next(iter(objective_func.values())))
 
 
 def create_app() -> Flask:
@@ -55,11 +62,16 @@ def create_app() -> Flask:
     @__app.route("/result", methods=["GET"])
     def result() -> str:
         """Return a result page"""
+        constraints = ast.literal_eval(request.args.get("constraints"))
+
         return render_template(
             "result.html",
             solution=request.args.get("solution"),
             rounded_solution=request.args.get("rounded_solution"),
             variables=ast.literal_eval(request.args.get("variables")),
+            constraints=constraints,
+            obj_func=request.args.get("obj_func"),
+            img_path=request.args.get("img_path"),
         )
 
     @__app.route("/", methods=["GET", "POST"])
@@ -75,11 +87,19 @@ def create_app() -> Flask:
                 return redirect(url_for(".missing_objective", _obj_func=obj_func))
 
             try:
+                constraints = [
+                    v
+                    for g in (
+                        yield_constraints(c, request.form.get("epsilon", 0, float))
+                        for c in request.form.get("constraints").split("\r\n")
+                    )
+                    for v in g
+                ]
+
                 solver = gen_solver(
                     {request.form.get("goal"): obj_func},
-                    request.form.get("constraints").split("\r\n"),
+                    constraints,
                     request.form.get("method"),
-                    request.form.get("epsilon", 0, float),
                 )
 
                 solved = solve(solver, request.form.get("round"), obj_func)
@@ -92,6 +112,11 @@ def create_app() -> Flask:
                         solution=solved["solution"],
                         rounded_solution=solved["rounded_solution"],
                         variables=solved["variables"],
+                        constraints=str(constraints),
+                        obj_func=obj_func,
+                        img_path=plot(constraints)
+                        if len(list(yield_variables(obj_func))) < 3
+                        else url_for("static", filename="img/applecrack.jpeg"),
                     )
                 )
 

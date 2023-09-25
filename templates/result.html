@@ -32,7 +32,7 @@
   <body>
     <div class="main">
       <div>
-        <h1>Solved.</h1>
+        <h1>Solved {{ obj_func }}.</h1>
         <img
           src="{{ url_for('static', filename='img/LP.png') }}"
           alt="LP"
@@ -60,6 +60,10 @@
 
           {% endfor %}
         </table>
+
+        <br />
+
+        <img src="{{img_path}}" alt="graph" height="500px" width="500px" />
 
         <a class="back container" href="../">
           <span
