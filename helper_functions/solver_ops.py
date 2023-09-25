@@ -35,7 +35,7 @@ def gen_solver(
 
     for objective, equation in object_func.items():
         solver: Solver = Solver.CreateSolver(method.upper())
-        equation = format_equation(equation)
+
         variable_dict = {
             var: solver.NumVar(0, solver.infinity(), var)
             for var in yield_variables(equation)

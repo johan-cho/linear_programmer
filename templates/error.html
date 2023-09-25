@@ -32,7 +32,7 @@
   <body>
     <div class="main">
       <div>
-        <h1 class="error">Error</h1>
+        <h1 class="error">Error when solving {{_obj_func}}</h1>
         <img
           src="{{ url_for('static', filename='img/LP.png') }}"
           alt="LP"
@@ -45,6 +45,12 @@
 
         <div class="traceback centered">
           <h2>{{_traceback}}</h2>
+        </div>
+
+        <h2>Constraints:</h2>
+
+        <div class="constraints traceback centered">
+          <h2>{{_constraints}}</h2>
         </div>
 
         <a class="back container" href="../">

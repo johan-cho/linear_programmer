@@ -7,7 +7,7 @@ from flask import url_for
 import numpy as np
 import matplotlib.pyplot as plt
 from .constraint_ops import get_constant
-from .os_helper import goback
+from .os_helper import goback, delete_all
 
 # pylint: disable=eval-used
 x = y = np.linspace(0, 15, 400)
@@ -25,6 +25,8 @@ COLOR_LIST = [
     "#33FFAA",
     "#FF33E1",
 ]
+
+PATH_TO_GRAPHS = os.path.join(goback(__file__, 2), "static", "graph")
 
 
 def plot(equations: list[str]) -> str:
@@ -75,10 +77,12 @@ def plot(equations: list[str]) -> str:
     plt.ylabel(r"$y (x2)$")
     # plt.show()
 
+    if not os.path.exists(PATH_TO_GRAPHS):
+        os.makedirs(PATH_TO_GRAPHS)
+    delete_all(PATH_TO_GRAPHS)
     f_name = f"{'-'.join(equations).replace('*', '').replace('+', '').replace('>', '').replace('<', '')}.png"
-
-    fig.savefig(os.path.join(goback(__file__, 2), "static", "img", f_name))
-    return url_for("static", filename="img/" + f_name)
+    fig.savefig(os.path.join(PATH_TO_GRAPHS, f_name))
+    return url_for("static", filename="graph/" + f_name)
 
 
 # def graph_as_img(equations: list[str]) -> io.StringIO:

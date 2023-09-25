@@ -151,3 +151,13 @@ h4 {
 .contact_div {
   margin-top: -10px;
 }
+
+.big_img {
+  border-radius: 10px;
+  max-width: 90%;
+}
+
+.constraints {
+  width: fit-content;
+  font-family: inherit;
+}

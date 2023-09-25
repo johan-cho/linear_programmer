@@ -8,6 +8,8 @@ OPERATOR_MAPPER = {
     "=": "==",
     "=<": "<=",
     "=>": ">=",
+    "≥": ">=",
+    "≤": "<=",
 }
 
 
@@ -84,7 +86,9 @@ def format_equation(equation: str) -> str:
         str: Formatted equation
     """
 
-    return re.sub(r"(\d)([a-zA-Z])", r"\1*\2", equation.replace(" ", ""))
+    return re.sub(
+        r"(\d)([a-zA-Z])", r"\1*\2", equation.replace(" ", "").replace("_", "")
+    )
 
 
 def yield_variables(equation: str) -> Iterable[str]:

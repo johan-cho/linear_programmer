@@ -101,3 +101,12 @@ function loadTestData() {
   constraints = document.getElementById("constraints");
   constraints.value = constraints.placeholder;
 }
+
+function offloadImg(img_id) {
+  var img = document.getElementById(img_id);
+  // img.src = img.getAttribute("data-src");
+  if (img.src == "") {
+    img.style.visibility = "hidden";
+    // img.src = img.getAttribute("data-src");
+  }
+}

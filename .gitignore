@@ -68,3 +68,5 @@ static/secrets.json
 static/secrets.html
 venv/
 .vscode
+
+graph*

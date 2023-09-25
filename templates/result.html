@@ -63,7 +63,20 @@
 
         <br />
 
-        <img src="{{img_path}}" alt="graph" height="500px" width="500px" />
+        <img
+          src="{{img_path}}"
+          alt="graph"
+          width="500px"
+          class="big_img"
+          id="graph_img"
+          onload="offloadImg('graph_img')"
+        />
+
+        <h2>Constraints:</h2>
+
+        <div class="constraints traceback centered">
+          <h2>{{_constraints}}</h2>
+        </div>
 
         <a class="back container" href="../">
           <span

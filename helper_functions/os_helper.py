@@ -18,5 +18,21 @@ def goback(file: str = None, levels: int = 1) -> str:
     )
 
 
+def delete_all(__path: str, limit: int = 5) -> None:
+    """Delete all files and folders in a path
+
+    Args:
+        __path (str): Path to delete"""
+
+    for root, dirs, files in os.walk(__path):
+        for __files in (dirs, files):
+            if len(__files) < limit:
+                continue
+        for file in files:
+            os.remove(os.path.join(root, file))
+        for _dir in dirs:
+            os.rmdir(os.path.join(root, _dir))
+
+
 if __name__ == "__main__":
     goback()
