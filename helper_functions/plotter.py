@@ -2,10 +2,12 @@
 import os
 import random
 
+
 from flask import url_for
 import numpy as np
 import matplotlib.pyplot as plt
 from .constraint_ops import get_constant
+from .os_helper import goback
 
 # pylint: disable=eval-used
 x = y = np.linspace(0, 15, 400)
@@ -75,7 +77,7 @@ def plot(equations: list[str]) -> str:
 
     f_name = f"{'-'.join(equations).replace('*', '').replace('+', '').replace('>', '').replace('<', '')}.png"
 
-    fig.savefig(os.path.join(os.getcwd(), "static", "img", f_name))
+    fig.savefig(os.path.join(goback(__file__, 2), "static", "img", f_name))
     return url_for("static", filename="img/" + f_name)
 
 
