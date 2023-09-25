@@ -157,7 +157,7 @@ h4 {
   max-width: 90%;
 }
 
-.constraints {
+.constraints_list {
   width: fit-content;
   font-family: inherit;
 }
