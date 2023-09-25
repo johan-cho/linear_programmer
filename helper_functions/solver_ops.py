@@ -3,7 +3,7 @@ import math
 import logging
 from typing import Union
 from ortools.linear_solver.pywraplp import Solver, Objective, Variable
-from .constraint_ops import format_equation, yield_variables
+from .constraint_ops import yield_variables
 from .exceptions import NoSolutionError
 
 # pylint: disable=line-too-long
@@ -55,6 +55,7 @@ def solve(
     solver: Solver,
     __round: Union[int, str, None] = None,
     __obj_func: Union[None, str] = None,
+    __autoround: int = 5,
 ) -> dict[str, Union[float, str, dict[str, Union[float, list]]]]:
     """Solve the solver object. Will print the solution and the rounded solution if __round is not None.
     Args:
@@ -72,7 +73,7 @@ def solve(
         raise NoSolutionError(f"No solution found for {__obj_func}")
 
     objective: Objective = solver.Objective()
-    solution = objective.Value()
+    solution = round(objective.Value(), __autoround)
 
     logging.info("Solution: for %s", __obj_func)
     logging.info("Objective value = %f", solution)
@@ -81,7 +82,7 @@ def solve(
     rounded_dict = {}
     variable: Variable
     for variable in solver.variables():
-        value = variable.solution_value()
+        value = round(variable.solution_value(), __autoround)
         name = variable.name()
         rounded_value = (
             ROUND_METHS[__round.lower()](value)

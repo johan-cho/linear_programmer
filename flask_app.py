@@ -50,6 +50,7 @@ def create_app() -> Flask:
             _traceback=request.args.get("_traceback"),
             _obj_func=request.args.get("_obj_func"),
             _constraints=request.args.get("_constraints"),
+            _goal=request.args.get("_goal"),
         )
 
     @__app.route("/result", methods=["GET"])
@@ -65,6 +66,7 @@ def create_app() -> Flask:
             _constraints=request.args.get("_constraints"),
             obj_func=request.args.get("obj_func"),
             img_path=request.args.get("img_path"),
+            goal=request.args.get("goal"),
         )
 
     @__app.route("/", methods=["GET", "POST"])
@@ -111,19 +113,25 @@ def create_app() -> Flask:
                     request.form.get("method"),
                 )
 
-                solved = solve(solver, request.form.get("round"), obj_func)
+                solved = solve(
+                    solver,
+                    request.form.get("round"),
+                    obj_func,
+                    request.form.get("autoround", 5, int),
+                )
 
                 # return solve(solver, request.form.get("round"), obj_func)
 
                 return redirect(
                     url_for(
                         ".result",
+                        goal=request.form.get("goal", "solve") + "d",
                         solution=solved["solution"],
                         rounded_solution=solved["rounded_solution"],
                         variables=solved["variables"],
                         # constraints=str(constraints),
                         obj_func=obj_func,
-                        img_path=plot(constraints)
+                        img_path=plot(constraints, solved["variables"])
                         if len(list(yield_variables(obj_func))) < 3
                         else "",
                         _constraints=request.form.get("constraints").replace(
@@ -143,6 +151,7 @@ def create_app() -> Flask:
                         _constraints=request.form.get("constraints").replace(
                             "\r\n", "; "
                         ),
+                        _goal=request.form.get("goal", "solve"),
                     )
                 )
         return render_template("index.html")
@@ -154,5 +163,5 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=80)
     # test_solve()

@@ -1,6 +1,7 @@
 """Helper functions for os module"""
 
 import os
+import logging
 
 
 def goback(file: str = None, levels: int = 1) -> str:
@@ -25,13 +26,17 @@ def delete_all(__path: str, limit: int = 5) -> None:
         __path (str): Path to delete"""
 
     for root, dirs, files in os.walk(__path):
-        for __files in (dirs, files):
-            if len(__files) < limit:
-                continue
         for file in files:
+            if len(files) < limit:
+                continue
+
             os.remove(os.path.join(root, file))
+            logging.info("Deleted %s", os.path.join(root, file))
         for _dir in dirs:
+            if len(dirs) < limit:
+                continue
             os.rmdir(os.path.join(root, _dir))
+            logging.info("Deleted %s", os.path.join(root, _dir))
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 """Module for plotting linear equations and inequalities using plotly."""
 import os
 import random
-
+import logging
 
 from flask import url_for
 import numpy as np
@@ -10,6 +10,7 @@ from .constraint_ops import get_constant
 from .os_helper import goback, delete_all
 
 # pylint: disable=eval-used
+# pylint: disable=broad-except
 x = y = np.linspace(0, 15, 400)
 X, Y = np.meshgrid(x, y)
 
@@ -29,11 +30,12 @@ COLOR_LIST = [
 PATH_TO_GRAPHS = os.path.join(goback(__file__, 2), "static", "graph")
 
 
-def plot(equations: list[str]) -> str:
+def plot(equations: list[str], solution: dict[str, list[int]]) -> str:
     """Plot linear equations and inequalities using matplotlib
 
     Args:
         equations (list[str]): List of equations
+        solution (dict[str, list[int]]): Solution to the equations
     Returns:
         path (str): Path to the image"""
 
@@ -68,6 +70,22 @@ def plot(equations: list[str]) -> str:
         #     col.set_label(equ)
         # plt.plot(X, Y, eval(eq.replace("x1", "X").replace("x2", "Y")), label=eq)
 
+    # for var, value in solution.items():
+    # plt.scatter([])
+    # plt.scatter(*value, color="red", s=100, label=var)
+
+    try:  # wow this sucks lol
+        plt.plot(
+            solution.get("x1", solution.get("x"))[0],
+            solution.get("x2", solution.get("y"))[0],
+            label="Solution",
+            color="black",
+            marker="o",
+            markersize=10,
+        )
+    except Exception as error:
+        logging.error("failed to plot solution %s", error)
+
     plt.xlim(0, max(constants))
     plt.ylim(0, max(constants))
     plt.grid(True)
@@ -79,9 +97,10 @@ def plot(equations: list[str]) -> str:
 
     if not os.path.exists(PATH_TO_GRAPHS):
         os.makedirs(PATH_TO_GRAPHS)
-    delete_all(PATH_TO_GRAPHS)
+    delete_all(PATH_TO_GRAPHS, limit=3)
     f_name = f"{'-'.join(equations).replace('*', '').replace('+', '').replace('>', '').replace('<', '')}.png"
     fig.savefig(os.path.join(PATH_TO_GRAPHS, f_name))
+    logging.info("Saved graph to %s", os.path.join(PATH_TO_GRAPHS, f_name))
     return url_for("static", filename="graph/" + f_name)
 
 
@@ -101,5 +120,5 @@ def plot(equations: list[str]) -> str:
 
 
 if __name__ == "__main__":
-    figg = plot(["x1+x2<=6", "-2*x1+3*x2<=-6", "8*x1-4*x2>=8", "x1>=0", "x2>=0"])
+    figg = plot(["x1+x2<=6", "-2*x1+3*x2<=-6", "8*x1-4*x2>=8", "x1>=0", "x2>=0"], {})
     # figg.savefig("test.png")

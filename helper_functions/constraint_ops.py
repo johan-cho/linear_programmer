@@ -12,6 +12,16 @@ OPERATOR_MAPPER = {
     "≤": "<=",
 }
 
+CONSTR_MAPPER = {
+    "a": "x1",
+    "b": "x2",
+    "c": "x3",
+    "d": "x4",
+    "e": "x5",
+    "f": "x6",
+    "g": "x7",
+}
+
 
 def yield_constraints(constraint: str, epsilon: float = 0.00001) -> Iterable[str]:
     """Return a parsed constraint with an epsilon added to the constant
@@ -77,18 +87,23 @@ def constraint_replace(__constr: str, __const: str, __opr: str, __eps: float) ->
     return new_constraint
 
 
-def format_equation(equation: str) -> str:
+def format_equation(equation: str, replace: list[str] = None) -> str:
     """Return a formatted equation
 
     Args:
         equation (str): Equation string
+        replace (list[str], optional): List of strings to replace. Defaults to None.
     Returns:
         str: Formatted equation
     """
 
-    return re.sub(
-        r"(\d)([a-zA-Z])", r"\1*\2", equation.replace(" ", "").replace("_", "")
-    )
+    for key, value in CONSTR_MAPPER.items():
+        equation = equation.replace(key, value)
+
+    for repl in replace or [" ", "_"]:
+        equation = equation.replace(repl, "")
+
+    return re.sub(r"(\d)([a-zA-Z])", r"\1*\2", equation)
 
 
 def yield_variables(equation: str) -> Iterable[str]:
