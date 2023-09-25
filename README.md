@@ -7,8 +7,9 @@ Deployed to <https://tandyc.pythonanywhere.com/>
 ## python modules
 
 - [google OR tools](https://developers.google.com/optimization/)
-- [Flask](https://flask.palletsprojects.com/en/1.1.x/)
-- [waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/)
+- [flask](https://flask.palletsprojects.com/en/1.1.x/)
+- [numpy](https://numpy.org/)
+- [matplotlib](https://matplotlib.org/)
 
 ## run command
 

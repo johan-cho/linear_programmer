@@ -1,5 +1,4 @@
 ortools
 flask
-waitress
 numpy
 matplotlib
