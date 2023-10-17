@@ -63,7 +63,7 @@ def solve(
         __round (int | str | None, optional): Round the solution values. Defaults to None. If 'down' or 'floor', will floor the solution values.
         __obj_func (None | str, optional): Objective function. Defaults to None.
     Returns:
-        str: HTML string
+        dict[str, Union[float, str, dict[str, Union[float, list]]]]: Solution
     """
 
     status = solver.Solve()
